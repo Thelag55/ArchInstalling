@@ -13,18 +13,18 @@ If you're on ethernet there's no need to do anything, in case you are going wire
 
 3. Activate the chosen interface (`wlan0`) to start scanning for networks:
 
-   station wlan0 scan
+   station `wlan0` scan
 
 4. View a list of available networks:
 
-   station wlan0 get-networks
+   station `wlan0` get-networks
 
-5. Identify the network you want to connect to (let's call it "net0").
+5. Identify the network you want to connect to (let's call it `net0`).
 
-6. Connect to the selected network ("net0"). If the network is secured, a prompt will appear to enter the passphrase:
+6. Connect to the selected network (`net0`). If the network is secured, a prompt will appear to enter the passphrase:
 
-   station wlan0 connect "net0"
+   station `wlan0` connect `net0`
 
    Note: The connection process might take a while.
 
-Feel free to replace "wlan0" and "net0" with your specific interface and network names.
+Feel free to replace `wlan0` and `net0` with your specific interface and network names.
