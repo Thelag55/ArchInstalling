@@ -1,5 +1,9 @@
 # ArchInstalling
 
+## Prerequisites
+
+### Newtork Connection
+
 In order to be able to run this script you require to have network connection.
 If you're on ethernet there's no need to do anything, in case you are going wireless you should run this commands:
 
@@ -28,3 +32,19 @@ If you're on ethernet there's no need to do anything, in case you are going wire
    Note: The connection process might take a while.
 
 Feel free to replace `wlan0` and `net0` with your specific interface and network names.
+
+## Installing
+
+1. Download the script
+   curl -LO https://github.com/Thelag55/ArchInstalling/blob/main/install.sh
+
+2. Make the script executable
+   chmod +x install.sh
+
+3. Run the script
+   ./install.sh
+
+## Usage
+
+   Run the script
+   ./install.sh
