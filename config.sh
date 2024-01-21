@@ -76,15 +76,15 @@ function installAndSetUpSudo() {
 }
 
 function endMountingPartitions() {
-   mkdir -p "/boot"
+   mkdir -p "/mnt/boot"
 
-   mount "${disk}1" "/boot"       # Mount ESP to /mnt/boot
+   mount "${disk}1" "/mnt/boot"       # Mount ESP to /mnt/boot
    mkswap "${disk}2"              # Set up swap
    swapon "${disk}2"              # Activate swap
 }
 
 function generateFstab() {
-   genfstab -U /mnt >> "/mnt/etc/fstab"
+   genfstab -U "/mnt" >> "/mnt/etc/fstab"
 }
 
 function main() {

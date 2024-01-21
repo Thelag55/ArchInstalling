@@ -112,7 +112,6 @@ function main() {
 
    installPackman
    installEssentials
-   generateFstab
 
    configfile="config.sh"
    
