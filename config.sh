@@ -75,8 +75,22 @@ function installAndSetUpSudo() {
    fi
 }
 
+function endMountingPartitions() {
+   mkdir -p "/boot"
+
+   mount "${disk}1" "/boot"       # Mount ESP to /mnt/boot
+   mkswap "${disk}2"              # Set up swap
+   swapon "${disk}2"              # Activate swap
+}
+
+function generateFstab() {
+   genfstab -U /mnt >> "/mnt/etc/fstab"
+}
 
 function main() {
+
+   endMountingPartitions
+   generateFstab
 
    setUpInitramfs
    setUpGRUB

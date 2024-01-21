@@ -48,13 +48,9 @@ function mountPartitions() {
    disk=$device
    # Create mount points
    mkdir -p "/mnt"
-   mkdir -p "/mnt/boot"
 
    # Mount the partitions
    mount "${disk}3" "/mnt"        # Mount root ("/") to /mnt
-   mount "${disk}1" "/mnt/boot"   # Mount ESP to /mnt/boot
-   mkswap "${disk}2"              # Set up swap
-   swapon "${disk}2"              # Activate swap
 }
 
 function createAndMountPartitions() {
@@ -83,10 +79,6 @@ function checkError() {
 
 function installEssentials() {
    pacstrap /mnt linux linux-headers linux-firmware base networkmanager grub wpa_supplicant base base-devel
-}
-
-function generateFstab() {
-   genfstab -U /mnt >> "/mnt/etc/fstab"
 }
 
 function enterArchChroot() {
