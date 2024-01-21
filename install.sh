@@ -1,5 +1,184 @@
 #!/bin/bash
+    
+function setUpKeyboard() {
+   loadkeys es
+}
 
+function setUpPartitions() {
+
+   InstallPackage "parted"
+
+   disk=
+
+   # Create a new GPT partition table
+   parted $disk --script mklabel gpt
+
+   # Create an EFI System Partition (ESP) of 4GB
+   parted $disk --script mkpart primary fat32 1MiB 5GiB
+
+   # Set the ESP flag on the partition
+   parted $disk --script set 1 esp on
+
+   # Create a swap partition fixed at 16GB
+   parted $disk --script mkpart primary linux-swap 5GiB 21GiB
+
+   # Create a root partition ("/") using the remaining space
+   parted $disk --script mkpart primary ext4 21GiB 100%
+
+   # Print the partition information
+   sudo parted $disk --script print
+}
+
+function formatPartitions() {
+
+   disk=   
+
+   mkfs.ext4 "${disk}3"
+
+   mkfs.fat -F32 "${disk}1" 
+}
+
+function mountPartitions() {
+
+   # Assuming /dev/sdb1 is the ESP, /dev/sdb2 is the swap, and /dev/sdb3 is the root ("/") partition
+   disk=
+   # Create mount points
+   mkdir -p /mnt/boot
+   mkdir -p /mnt
+
+   # Mount the partitions
+   mount "${disk}1" /mnt/boot   # Mount ESP to /mnt/boot
+   mkswap "${disk}2"            # Set up swap
+   swapon "${disk}2"            # Activate swap
+   mount "${disk}3" /mnt        # Mount root ("/") to /mnt
+
+}
+
+function createAndMountPartitions() {
+   echo "Wellcome to the auto set up"
+   echo "$(sudo fdisk -l | grep sd)"
+   echo "Chose which device u want to use (At least 50GiB)"
+   devices=$(sudo fdisk -l | grep sd | awk '{print $2}' | sed "s/://") 
+   device=''
+   while true; do 
+      read device
+      if [[ " $devices[@] " = " $device " ]]; then
+         break;
+      fi
+   done
+   setUpPartitions $device
+   formatPartitions $device
+   mountPartitions $device
+}
+
+function checkError() {
+   if [ $? -ne 0 ]; then
+      echo "There was an error in the function $1"
+   fi
+}
+
+function setUpGRUB() {
+   grub-install $device
+   grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+function setUpHostname() {
+   echo "ArchMachine" > /etc/hostname
+}
+
+function setUpKeyboardLayout() {
+   ## Keyboard layout is automated and it will use the Spanish One
+   sed -i "/en_US.UTF-8 UTF-8/s/^#//" /etc/locale.gen # Here unlock the US one
+   sed -i "/es_ES.UTF-8 UTF-8/s/^#//" /etc/locale.gen # Here unlock the ES one
+   locale-gen
+   echo "KEYMAP=es" >> /etc/vconsole.conf
+}
+
+function InstallPackage() {
+   pacman -S --noconfirm --needed "$1"
+}
+
+function installAndSetUpSudo() {
+   InstallPackage "sudo"
+   #We'll let a .aui file in case we ever need to back up
+   if [[ ! -f /etc/sudoers.aui ]]; then
+		cp -v /etc/sudoers /etc/sudoers.aui
+		## Uncomment to allow members of group wheel to execute any command
+		sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
+   fi
+}
+
+function setUpRoot() {
+   arch-chroot /mnt
+   passwd
+   while [ $? -ne 0 ]; do
+      passwd
+   done
+   exit
+}
+
+function createUser() {
+   useradd -m "$1"
+   passwd "$1"
+   while [ $? -ne 0 ]; do
+      passwd "$1"
+   done
+   usermod -aG wheel "$1"
+}
+
+function setUpUsers() {
+   while true; do
+      echo "Do you want to create a new User? [Y/n]:"
+      read answer
+      if [ "$answer" != "n" ]; then
+         read -p "Enter username: " name
+         createUser "$name"
+      else
+         break
+      fi
+   done
+}
+
+function installEssentials() {
+   pacstrap /mnt linux-lts linux-lts-headers linux-lts-firmware base networkmanager grub wpa_supplicant base base-devel
+}
+
+function generateFstab() {
+   genfstab -U /mnt >> /mnt/etc/fstab
+}
+
+function setTimeZone() {
+   sudo ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+}
+
+function setUpLanguage() {
+   echo  "LANG=en_US.UTF-8" > /etc/locale.conf
+}
+
+function setUpInitramfs() {
+   mkinitcpio -P
+}
+
+function main() {
+   setUpKeyboard
+   createAndMountPartitions
+
+   installEssentials
+
+   generateFstab
+   setUpInitramfs
+   setUpGRUB
+   setTimeZone
+   setUpHostname
+   setUpLanguage
+   setUpKeyboardLayout
+   installAndSetUpSudo
+   setUpRoot
+   setUpUsers
+   
+}
+
+####Ideas
 #time zone
 #disk partitions
 #language

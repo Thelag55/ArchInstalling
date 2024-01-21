@@ -33,6 +33,10 @@ If you're on ethernet there's no need to do anything, in case you are going wire
 
 Feel free to replace `wlan0` and `net0` with your specific interface and network names.
 
+### UEFI
+
+   Enable boot into UEFI (e.g, https://neosmart.net/wiki/enable-uefi-boot/)
+
 ## Installing
 
 1. Download the script
