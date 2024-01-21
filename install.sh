@@ -177,7 +177,7 @@ function installPackman() {
 
 function updateDependences() {
    pacman -Sy
-   pacman -S efibootmgr
+   InstallPackage "efibootmgr"
 }
 
 function main() {
@@ -189,8 +189,6 @@ function main() {
    installEssentials
    generateFstab
    
-   enterArchChroot
-
    setUpInitramfs
    setUpGRUB
    setTimeZone
@@ -200,6 +198,8 @@ function main() {
    installAndSetUpSudo
    setUpRoot
    setUpUsers
+
+   enterArchChroot
 }
 
 main
