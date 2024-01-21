@@ -47,16 +47,14 @@ function mountPartitions() {
    # Assuming /dev/sdx1 is the ESP, /dev/sdx2 is the swap, and /dev/sdx3 is the root ("/") partition
    disk=$device
    # Create mount points
-   mkdir -p "/mnt/boot"
    mkdir -p "/mnt"
-   mkdir -p "/mnt/proc"
+   mkdir -p "/mnt/boot"
 
    # Mount the partitions
+   mount "${disk}3" "/mnt"        # Mount root ("/") to /mnt
    mount "${disk}1" "/mnt/boot"   # Mount ESP to /mnt/boot
    mkswap "${disk}2"              # Set up swap
    swapon "${disk}2"              # Activate swap
-   mount "${disk}3" "/mnt"        # Mount root ("/") to /mnt
-
 }
 
 function createAndMountPartitions() {
