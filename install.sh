@@ -93,7 +93,7 @@ function generateFstab() {
 }
 
 function enterArchChroot() {
-   arch-chroot "/mnt" "/bin/bash" -c "$1"
+   arch-chroot "/mnt" "/bin/bash" -c "./$1"
 }
 
 function installPackman() {
@@ -113,7 +113,7 @@ function updateDependences() {
 }
 
 function setUpArchChrootEnv() {
-   cp "$1" '/mnt/"$1"'
+   cp "$1" /mnt
 }
 
 function main() {
