@@ -48,15 +48,15 @@ function mountPartitions() {
    # Assuming /dev/sdx1 is the ESP, /dev/sdx2 is the swap, and /dev/sdx3 is the root ("/") partition
    disk=$device
    # Create mount points
-   mkdir -p /mnt/boot
-   mkdir -p /mnt
-   mkdir -p /mnt/proc
+   mkdir -p "/mnt/boot"
+   mkdir -p "/mnt"
+   mkdir -p "/mnt/proc"
 
    # Mount the partitions
-   mount "${disk}1" /mnt/boot   # Mount ESP to /mnt/boot
-   mkswap "${disk}2"            # Set up swap
-   swapon "${disk}2"            # Activate swap
-   mount "${disk}3" /mnt        # Mount root ("/") to /mnt
+   mount "${disk}1" "/mnt/boot"   # Mount ESP to /mnt/boot
+   mkswap "${disk}2"              # Set up swap
+   swapon "${disk}2"              # Activate swap
+   mount "${disk}3" "/mnt"        # Mount root ("/") to /mnt
 
 }
 
@@ -84,100 +84,36 @@ function checkError() {
    fi
 }
 
-function setUpGRUB() {
-   grub-install $device
-   grub-mkconfig -o /boot/grub/grub.cfg
-}
-
-function setUpHostname() {
-   echo "ArchMachine" > /etc/hostname
-}
-
-function setUpKeyboardLayout() {
-   ## Keyboard layout is automated and it will use the Spanish One
-   sed -i "/en_US.UTF-8 UTF-8/s/^#//" /etc/locale.gen # Here unlock the US one
-   sed -i "/es_ES.UTF-8 UTF-8/s/^#//" /etc/locale.gen # Here unlock the ES one
-   locale-gen
-   echo "KEYMAP=es" >> /etc/vconsole.conf
-}
-
-function installAndSetUpSudo() {
-   InstallPackage "sudo"
-   #We'll let a .aui file in case we ever need to back up
-   if [[ ! -f /etc/sudoers.aui ]]; then
-		cp -v /etc/sudoers /etc/sudoers.aui
-		## Uncomment to allow members of group wheel to execute any command
-		sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
-   fi
-}
-
-function setUpRoot() {
-   passwd
-   while [ $? -ne 0 ]; do
-      passwd
-   done
-}
-
-function createUser() {
-   useradd -m "$1"
-   passwd "$1"
-   while [ $? -ne 0 ]; do
-      passwd "$1"
-   done
-   usermod -aG wheel "$1"
-}
-
-function setUpUsers() {
-   while true; do
-      echo "Do you want to create a new User? [Y/n]:"
-      read answer
-      if [ "$answer" != "n" ]; then
-         read -p "Enter username: " name
-         createUser "$name"
-      else
-         break
-      fi
-   done
-}
-
 function installEssentials() {
    pacstrap /mnt linux linux-headers linux-firmware base networkmanager grub wpa_supplicant base base-devel
 }
 
 function generateFstab() {
-   genfstab -U /mnt >> /mnt/etc/fstab
-}
-
-function setTimeZone() {
-   sudo ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-}
-
-function setUpLanguage() {
-   echo  "LANG=en_US.UTF-8" > /etc/locale.conf
-}
-
-function setUpInitramfs() {
-   mkinitcpio -P
+   genfstab -U /mnt >> "/mnt/etc/fstab"
 }
 
 function enterArchChroot() {
-   arch-chroot /mnt
+   arch-chroot "/mnt" "/bin/bash" -c "$1"
 }
 
 function installPackman() {
     # Check if pacman.conf exists
-    if [ ! -e /mnt/etc/pacman.conf ]; then
+    if [ ! -e "/mnt/etc/pacman.conf" ]; then
         # Create pacman.conf file if it doesn't exist
-        cp -f /etc/pacman.conf /mnt/etc/pacman.conf
+        cp -f "/etc/pacman.conf" "/mnt/etc/pacman.conf"
     fi
 
     # Modify pacman.conf to specify the desired mirrorlist
-    sed -i "s/^Server = .*$/Server = https://archlinux.es/\$repo/os/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/community/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/extra/$arch/\$pkg.tar.xz/" /mnt/etc/pacman.conf
+    sed -i "s/^Server = .*$/Server = https://archlinux.es/\$repo/os/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/community/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/extra/$arch/\$pkg.tar.xz/" "/mnt/etc/pacman.conf"
 }
 
 function updateDependences() {
    pacman -Sy
    InstallPackage "efibootmgr"
+}
+
+function setUpArchChrootEnv() {
+   cp "$1" '/mnt/"$1"'
 }
 
 function main() {
@@ -188,18 +124,12 @@ function main() {
    installPackman
    installEssentials
    generateFstab
-   
-   setUpInitramfs
-   setUpGRUB
-   setTimeZone
-   setUpHostname
-   setUpLanguage
-   setUpKeyboardLayout
-   installAndSetUpSudo
-   setUpRoot
-   setUpUsers
 
-   enterArchChroot
+   configfile="config.sh"
+   
+   setUpArchChrootEnv "$configfile"
+
+   enterArchChroot "$configfile $device"      
 }
 
 main
