@@ -185,11 +185,12 @@ function main() {
    updateDependences
    createAndMountPartitions
 
-   enterArchChroot
    installPackman
    installEssentials
-
    generateFstab
+   
+   enterArchChroot
+
    setUpInitramfs
    setUpGRUB
    setTimeZone
