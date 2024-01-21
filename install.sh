@@ -4,6 +4,7 @@
 device=""
 
 function InstallPackage() {
+   pacman -Sy
    pacman -S --noconfirm --needed "$1"
 }
     
