@@ -141,7 +141,7 @@ function setUpUsers() {
 }
 
 function installEssentials() {
-   pacstrap /mnt linux-lts linux-lts-headers linux-lts-firmware base networkmanager grub wpa_supplicant base base-devel
+   pacstrap /mnt linux linux-headers linux-firmware base networkmanager grub wpa_supplicant base base-devel
 }
 
 function generateFstab() {
