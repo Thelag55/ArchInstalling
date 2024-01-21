@@ -4,7 +4,6 @@
 device=""
 
 function InstallPackage() {
-   pacman -Sy
    pacman -S --noconfirm --needed "$1"
 }
     
@@ -13,8 +12,6 @@ function setUpKeyboard() {
 }
 
 function setUpPartitions() {
-
-   InstallPackage "parted"
 
    disk=$device
 
@@ -53,6 +50,7 @@ function mountPartitions() {
    # Create mount points
    mkdir -p /mnt/boot
    mkdir -p /mnt
+   mkdir -p /mnt/proc
 
    # Mount the partitions
    mount "${disk}1" /mnt/boot   # Mount ESP to /mnt/boot
@@ -177,8 +175,14 @@ function installPackman() {
     sed -i "s/^Server = .*$/Server = https://archlinux.es/\$repo/os/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/community/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/extra/$arch/\$pkg.tar.xz/" /mnt/etc/pacman.conf
 }
 
+function updateDependences() {
+   pacman -Sy
+   pacman -S efibootmgr
+}
+
 function main() {
    setUpKeyboard
+   updateDependences
    createAndMountPartitions
 
    enterArchChroot
