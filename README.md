@@ -41,6 +41,7 @@ Feel free to replace `wlan0` and `net0` with your specific interface and network
 
 1. Download the script
    curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/install.sh
+   curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/config.sh
 
 2. Make the script executable
    chmod +x install.sh
