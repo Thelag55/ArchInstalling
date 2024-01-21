@@ -1,4 +1,8 @@
 #!/bin/bash
+
+function InstallPackage() {
+   pacman -S --noconfirm --needed "$1"
+}
     
 function setUpKeyboard() {
    loadkeys es
@@ -8,7 +12,7 @@ function setUpPartitions() {
 
    InstallPackage "parted"
 
-   disk=
+   disk=$1
 
    # Create a new GPT partition table
    parted $disk --script mklabel gpt
@@ -31,7 +35,7 @@ function setUpPartitions() {
 
 function formatPartitions() {
 
-   disk=   
+   disk=$1 
 
    mkfs.ext4 "${disk}3"
 
@@ -40,8 +44,8 @@ function formatPartitions() {
 
 function mountPartitions() {
 
-   # Assuming /dev/sdb1 is the ESP, /dev/sdb2 is the swap, and /dev/sdb3 is the root ("/") partition
-   disk=
+   # Assuming /dev/sdx1 is the ESP, /dev/sdx2 is the swap, and /dev/sdx3 is the root ("/") partition
+   disk=$1
    # Create mount points
    mkdir -p /mnt/boot
    mkdir -p /mnt
@@ -55,17 +59,18 @@ function mountPartitions() {
 }
 
 function createAndMountPartitions() {
-   echo "Wellcome to the auto set up"
+   echo "Welcome to the auto set up"
    echo "$(sudo fdisk -l | grep sd)"
-   echo "Chose which device u want to use (At least 50GiB)"
+   echo "Choose which device you want to use (At least 50GiB)"
    devices=$(sudo fdisk -l | grep sd | awk '{print $2}' | sed "s/://") 
-   device=''
-   while true; do 
-      read device
-      if [[ " $devices[@] " = " $device " ]]; then
-         break;
-      fi
+  
+   read -p "Enter device: " device
+
+   while [[ ! " ${devices[@]} " =~ " $device " ]]; do
+      echo "Invalid device. Choose again:"
+      read -p "Enter device: " device
    done
+
    setUpPartitions $device
    formatPartitions $device
    mountPartitions $device
@@ -92,10 +97,6 @@ function setUpKeyboardLayout() {
    sed -i "/es_ES.UTF-8 UTF-8/s/^#//" /etc/locale.gen # Here unlock the ES one
    locale-gen
    echo "KEYMAP=es" >> /etc/vconsole.conf
-}
-
-function InstallPackage() {
-   pacman -S --noconfirm --needed "$1"
 }
 
 function installAndSetUpSudo() {
@@ -159,10 +160,27 @@ function setUpInitramfs() {
    mkinitcpio -P
 }
 
+function enterArchChroot() {
+   arch-chroot /mnt
+}
+
+function installPackman() {
+    # Check if pacman.conf exists
+    if [ ! -e /mnt/etc/pacman.conf ]; then
+        # Create pacman.conf file if it doesn't exist
+        cp -f /etc/pacman.conf /mnt/etc/pacman.conf
+    fi
+
+    # Modify pacman.conf to specify the desired mirrorlist
+    sed -i "s/^Server = .*$/Server = https://archlinux.es/\$repo/os/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/community/$arch/\$pkg.tar.xz\nServer = https://archlinux.es/\$repo/extra/$arch/\$pkg.tar.xz/" /mnt/etc/pacman.conf
+}
+
 function main() {
    setUpKeyboard
    createAndMountPartitions
 
+   enterArchChroot
+   installPackman
    installEssentials
 
    generateFstab
@@ -175,16 +193,4 @@ function main() {
    installAndSetUpSudo
    setUpRoot
    setUpUsers
-   
 }
-
-####Ideas
-#time zone
-#disk partitions
-#language
-#keyboard layout
-#locale time
-#create root 
-#sudo
-#create users
-
