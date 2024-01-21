@@ -2,6 +2,10 @@
 
 device="$1"
 
+function InstallPackage() {
+   pacman -S --noconfirm --needed "$1"
+}
+
 function setUpInitramfs() {
    mkinitcpio -P
 }
