@@ -1,5 +1,7 @@
 #!/bin/bash
 
+device=""
+
 function InstallPackage() {
    pacman -S --noconfirm --needed "$1"
 }
@@ -12,7 +14,7 @@ function setUpPartitions() {
 
    InstallPackage "parted"
 
-   disk=$1
+   disk=$device
 
    # Create a new GPT partition table
    parted $disk --script mklabel gpt
@@ -35,7 +37,7 @@ function setUpPartitions() {
 
 function formatPartitions() {
 
-   disk=$1 
+   disk=$device 
 
    mkfs.ext4 "${disk}3"
 
@@ -45,7 +47,7 @@ function formatPartitions() {
 function mountPartitions() {
 
    # Assuming /dev/sdx1 is the ESP, /dev/sdx2 is the swap, and /dev/sdx3 is the root ("/") partition
-   disk=$1
+   disk=$device
    # Create mount points
    mkdir -p /mnt/boot
    mkdir -p /mnt
@@ -71,9 +73,9 @@ function createAndMountPartitions() {
       read -p "Enter device: " device
    done
 
-   setUpPartitions $device
-   formatPartitions $device
-   mountPartitions $device
+   setUpPartitions 
+   formatPartitions 
+   mountPartitions 
 }
 
 function checkError() {
@@ -110,12 +112,10 @@ function installAndSetUpSudo() {
 }
 
 function setUpRoot() {
-   arch-chroot /mnt
    passwd
    while [ $? -ne 0 ]; do
       passwd
    done
-   exit
 }
 
 function createUser() {
@@ -194,3 +194,5 @@ function main() {
    setUpRoot
    setUpUsers
 }
+
+main
