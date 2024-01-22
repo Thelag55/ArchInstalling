@@ -81,9 +81,11 @@ function installAndSetUpSudo() {
 }
 
 function endMountingPartitions() {
+   read -p "Before mount '${disk}1'" test
    mkdir -p "/boot/EFI"
 
    mount "${disk}1" "/boot/EFI"       # Mount ESP to /mnt/boot
+   read -p "After mount" test
 }
 
 
