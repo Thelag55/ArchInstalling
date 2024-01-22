@@ -46,7 +46,7 @@ function setUpUsers() {
 
 function setUpGRUB() {
    # Installing GRUB dependences
-   pacman -S grub efibootmgr dosfstools os-prober mtools
+   pacman -S --noconfirm --needed grub efibootmgr dosfstools os-prober mtools
    
    grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
    mkdir /boot/grub/locale
@@ -81,11 +81,9 @@ function installAndSetUpSudo() {
 }
 
 function endMountingPartitions() {
-   read -p "Before mount '${device}1'" test
    mkdir -p "/boot/EFI"
 
    mount "${device}1" "/boot/EFI"       # Mount ESP to /mnt/boot
-   read -p "After mount" test
 }
 
 
