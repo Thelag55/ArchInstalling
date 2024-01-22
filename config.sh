@@ -74,9 +74,9 @@ function installAndSetUpSudo() {
    #We'll let a .aui file in case we ever need to back up
    if [[ ! -f /etc/sudoers.aui ]]; then
       cp -v "/etc/sudoers" "/etc/sudoers.aui"
-      ## Uncomment to allow members of group wheel to execute any command
-      sed -i '/%wheel ALL=(ALL) ALL/s/^#//' "/etc/sudoers"
    fi
+   ## Uncomment to allow members of group wheel to execute any command
+   sed -i '/%wheel ALL=(ALL) ALL/s/^#//' "/etc/sudoers"
 }
 
 function endMountingPartitions() {
