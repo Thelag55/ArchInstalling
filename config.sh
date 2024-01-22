@@ -71,12 +71,12 @@ function setUpKeyboardLayout() {
 
 function installAndSetUpSudo() {
    InstallPackage "sudo"
-   #We'll let a .aui file in case we ever need to back up
-   if [[ ! -f /etc/sudoers.aui ]]; then
-      cp -v "/etc/sudoers" "/etc/sudoers.aui"
-   fi
-   ## Uncomment to allow members of group wheel to execute any command
-   sed -i '/%wheel ALL=(ALL) ALL/s/^#//' "/etc/sudoers"
+   InstallPackage "visudo"
+
+   visudo -f /tmp/sudoers.tmp
+   sed -i '/%wheel ALL=(ALL) ALL/s/^# //' /tmp/sudoers.tmp
+   cp /tmp/sudoers.tmp /etc/sudoers
+
 }
 
 function endMountingPartitions() {
