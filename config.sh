@@ -45,8 +45,13 @@ function setUpUsers() {
 }
 
 function setUpGRUB() {
-   grub-install $device
-   grub-mkconfig -o "/boot/grub/grub.cfg"
+   # Installing GRUB dependences
+   pacman -S grub efibootmgr dosfstools os-prober mtools
+   
+   grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
+   mkdir /boot/grub/locale
+   cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+   grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 function setUpHostname() {
@@ -76,24 +81,17 @@ function installAndSetUpSudo() {
 }
 
 function endMountingPartitions() {
-   mkdir -p "/mnt/boot"
+   mkdir -p "/boot/EFI"
 
-   mount "${disk}1" "/mnt/boot"       # Mount ESP to /mnt/boot
-   mkswap "${disk}2"              # Set up swap
-   swapon "${disk}2"              # Activate swap
+   mount "${disk}1" "/boot/EFI"       # Mount ESP to /mnt/boot
 }
 
-function generateFstab() {
-   genfstab -U "/mnt" >> "/mnt/etc/fstab"
-}
 
 function main() {
-
    endMountingPartitions
-   generateFstab
+   setUpGRUB
 
    setUpInitramfs
-   setUpGRUB
    setTimeZone
    setUpHostname
    setUpLanguage

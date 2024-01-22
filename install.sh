@@ -39,7 +39,7 @@ function formatPartitions() {
 
    mkfs.ext4 "${disk}3"
 
-   mkfs.fat -F32 "${disk}1" 
+   mkfs.vfat -F32 "${disk}1" 
 }
 
 function mountPartitions() {
@@ -51,6 +51,9 @@ function mountPartitions() {
 
    # Mount the partitions
    mount "${disk}3" "/mnt"        # Mount root ("/") to /mnt
+
+   mkswap /dev/sda2
+   swapon
 }
 
 function createAndMountPartitions() {
@@ -105,10 +108,16 @@ function setUpArchChrootEnv() {
    cp "$1" /mnt
 }
 
+function generateFstab() {
+   mkdir -p "/mnt/etc"
+   genfstab -U "/mnt" >> "/mnt/etc/fstab"
+}
+
 function main() {
    setUpKeyboard
    updateDependences
    createAndMountPartitions
+   generateFstab
 
    installPackman
    installEssentials
@@ -117,7 +126,10 @@ function main() {
    
    setUpArchChrootEnv "$configfile"
 
-   enterArchChroot "$configfile $device"      
-}
+   enterArchChroot "$configfile $device"
 
+   umount -a # In order to do not corrupt any file      
+
+   # reboot
+}
 main
