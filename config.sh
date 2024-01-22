@@ -23,12 +23,11 @@ function setUpRoot() {
 }
 
 function createUser() {
-   useradd -m "$1"
+   useradd -m -G wheel "$1"
    passwd "$1"
    while [ $? -ne 0 ]; do
       passwd "$1"
    done
-   usermod -aG "wheel" "$1"
 }
 
 function setUpUsers() {
@@ -89,7 +88,6 @@ function endMountingPartitions() {
 
 function main() {
    endMountingPartitions
-   setUpGRUB
 
    setUpInitramfs
    setTimeZone
@@ -99,6 +97,8 @@ function main() {
    installAndSetUpSudo
    setUpRoot
    setUpUsers
+
+   setUpGRUB
 }
 
 main
