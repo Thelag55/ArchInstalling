@@ -74,11 +74,16 @@ function installAndSetUpSudo() {
    InstallPackage "visudo"
 
    cp /etc/sudoers /tmp/sudoers.tmp
-   visudo -f /tmp/sudoers.tmp
-   sed -i '/%wheel ALL=(ALL) ALL/s/^# //' /tmp/sudoers.tmp
-   cp /tmp/sudoers.tmp /etc/sudoers
-
+   echo "%wheel ALL=(ALL:ALL) ALL" >> /tmp/sudoers.tmp
+   visudo -c -f /tmp/sudoers.tmp
+   if [ $? -eq 0 ]; then
+      cp /tmp/sudoers.tmp /etc/sudoers
+   else
+      echo "sudoers file has a syntax error. Not replacing the original file."
+   fi
 }
+
+
 
 function endMountingPartitions() {
    mkdir -p "/boot/EFI"
