@@ -130,6 +130,6 @@ function main() {
 
    umount -a # In order to do not corrupt any file      
 
-   # reboot
+   reboot
 }
 main
