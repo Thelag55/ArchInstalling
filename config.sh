@@ -73,6 +73,7 @@ function installAndSetUpSudo() {
    InstallPackage "sudo"
    InstallPackage "visudo"
 
+   cp /etc/sudoers /tmp/sudoers.tmp
    visudo -f /tmp/sudoers.tmp
    sed -i '/%wheel ALL=(ALL) ALL/s/^# //' /tmp/sudoers.tmp
    cp /tmp/sudoers.tmp /etc/sudoers
