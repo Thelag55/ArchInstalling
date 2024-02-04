@@ -83,7 +83,9 @@ function installAndSetUpSudo() {
    fi
 }
 
-
+function updatePackageManager() {
+    sudo pacman -Syu
+}
 
 function endMountingPartitions() {
    mkdir -p "/boot/EFI"
@@ -96,6 +98,8 @@ function main() {
    endMountingPartitions
 
    setUpInitramfs
+   
+   updatePackageManager
    setTimeZone
    setUpHostname
    setUpLanguage

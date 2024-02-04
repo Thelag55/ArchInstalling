@@ -30,7 +30,7 @@ function setUpHyperland() {
    git clone https://gitlab.com/stephan-raabe/dotfiles.git
    cd dotfiles
    read -p "Press Enter to start the installation..."
-   ./install.sh
+   echo "$password" | sudo -S ./install.sh
 }
 
 function main() {
