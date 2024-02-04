@@ -14,7 +14,7 @@ function installBlackArch() {
    cd ~/Desktop/repos/BlackArch
    curl -O https://blackarch.org/strap.sh
    chmod +x strap.sh
-   sudo ./strap.sh
+   sudo -S ./strap.sh
    InstallPackage blackarch
    sudo pacman -Syu --noconfirm
 }

@@ -235,7 +235,8 @@ function main2() {
    setUpNetwork
    read -p "Read main user name: " mainUser
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
-   su -$mainUser -c "./userConfig.sh"
+   sudo chmod +x ./userConfig.sh
+   su -l $mainUser -c "./userConfig.sh"
 
 sleep 10
    install_kitty
