@@ -111,16 +111,17 @@ main
 
 
 
+#!/bin/bash
+
 function setUpNetwork() {
-   sudo su
-   systemctl start NetworkManager.service
-   systemctl enable NetworkManager
-   systemctl start wpa_supplicant.service
-   systemctl enable wpa_supplicant.service
+   sudo systemctl start NetworkManager.service
+   sudo systemctl enable NetworkManager
+   sudo systemctl start wpa_supplicant.service
+   sudo systemctl enable wpa_supplicant.service
 }
 
 function installAUR() {
-   pacman -S git
+   sudo pacman -S git
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
@@ -261,14 +262,11 @@ function install_mdcat() {
 }
 
 function main2() {
-   sudo su
    setUpNetwork
    read -p "Read main user name: " mainUser
-   su $mainUser
-   installAUR
-   installBlackArch
-   setUpHyperland
-   sudo su
+   su $mainUser -c "installAUR"
+   su $mainUser -c "installBlackArch"
+   su $mainUser -c "setUpHyperland"
    install_kitty
    install_firefox
    install_locate
@@ -285,3 +283,4 @@ function main2() {
 }
 
 main2
+
