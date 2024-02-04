@@ -1,5 +1,9 @@
 #!/bin/bash
 
+function InstallPackage() {
+   pacman -S --noconfirm --needed "$1"
+}
+
 function installAUR() {
    InstallPackage git
    mkdir -p ~/Desktop/repos
