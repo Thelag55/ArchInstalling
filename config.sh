@@ -116,37 +116,6 @@ function setUpNetwork() {
    sudo systemctl enable wpa_supplicant.service
 }
 
-function installAUR() {
-   InstallPackage git
-   mkdir -p ~/Desktop/repos
-   cd ~/Desktop/repos
-   git clone https://aur.archlinux.org/paru-bin.git
-   cd paru-bin
-   makepkg -si --noconfirm
-}
-
-function installBlackArch() {
-   mkdir -p ~/Desktop/repos/BlackArch
-   cd ~/Desktop/repos/BlackArch
-   curl -O https://blackarch.org/strap.sh
-   chmod +x strap.sh
-   sudo ./strap.sh
-   InstallPackage blackarch
-   sudo pacman -Syu --noconfirm
-}
-
-function setUpHyperland() {
-   mkdir ~/Downloads
-   # 1.) Change into your Downloads folder
-   cd ~/Downloads
-   # 2.) Clone the dotfiles repository into the Downloads folder
-   git clone https://gitlab.com/stephan-raabe/dotfiles.git
-   # 3.) Change into the dotfiles folder
-   cd dotfiles
-   # 4.) Start the installation
-   ./install.sh
-}
-
 # Function to install Kitty
 function install_kitty() {
     InstallPackage kitty
@@ -165,6 +134,7 @@ function install_locate() {
 # Function to install zsh for all users and set it as the default shell
 function install_zsh() {
     InstallPackage zsh
+    InstallPackage dos2unix
 
     # Change the shell for all users
     users=$(cut -d: -f1 /etc/passwd)
@@ -176,6 +146,7 @@ function install_zsh() {
     # Create .zshrc in root and make a link for all users
     cd /tmp
     curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/.zshrc
+    dos2unix .zshrc
     sudo cp .zshrc /root/.zshrc
     for user_home in /home/*; do
         if [ -d "$user_home" ]; then
@@ -218,6 +189,8 @@ function config_install_kitty() {
     cd /root/.config/kitty
     sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
     sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/color.ini
+    dos2unix kitty.conf
+    dos2unix color.ini
 
     for user_home in /home/*; do
         if [ -d "$user_home" ]; then
@@ -261,24 +234,33 @@ function install_mdcat() {
 function main2() {
    setUpNetwork
    read -p "Read main user name: " mainUser
-   su -l $mainUser -c "installAUR"
-   sleep 10
-   su -l $mainUser -c "installBlackArch"
-   sleep 10
-   su -l $mainUser -c "setUpHyperland"
-   sleep 10
+   su -$mainUser -c "./userConfig.sh"
+
+sleep 10
    install_kitty
+sleep 10
    install_firefox
+sleep 10
    install_locate
+sleep 10
    install_zsh
+sleep 10
    install_zsh_plugins
+sleep 10
    update_system_files
+sleep 10
    install_bat_lsd
+sleep 10
    install_nerd_fonts
+sleep 10
    config_install_kitty
+sleep 10
    install_powerlevel_10k
+sleep 10
    install_fzf
+sleep 10
    install_neovim_nvchad
+sleep 10
    install_mdcat
 }
 
