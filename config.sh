@@ -175,6 +175,7 @@ function install_bat_lsd() {
 
 # Function to install Hack Nerd Fonts
 function install_nerd_fonts() {
+    InstallPackage unzipus
     sudo mkdir -p /usr/share/fonts
     cd /usr/share/fonts
     sudo curl -LO https://github.com/Thelag55/ArchInstalling/blob/main/Hack.zip
@@ -236,6 +237,7 @@ function main2() {
    read -p "Read main user name: " mainUser
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
    sudo chmod +x ./userConfig.sh
+   mv userConfig.sh home/$mainUser
    su -l $mainUser -c "./userConfig.sh"
 
 sleep 10
