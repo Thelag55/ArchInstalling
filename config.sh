@@ -109,10 +109,6 @@ function main() {
 
 main
 
-
-
-#!/bin/bash
-
 function setUpNetwork() {
    sudo systemctl start NetworkManager.service
    sudo systemctl enable NetworkManager
@@ -121,12 +117,12 @@ function setUpNetwork() {
 }
 
 function installAUR() {
-   sudo pacman -S git
+   InstallPackage git
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
-   makepkg -si
+   makepkg -si --noconfirm
 }
 
 function installBlackArch() {
@@ -135,7 +131,8 @@ function installBlackArch() {
    curl -O https://blackarch.org/strap.sh
    chmod +x strap.sh
    sudo ./strap.sh
-   sudo pacman -Syu
+   InstallPackage blackarch
+   sudo pacman -Syu --noconfirm
 }
 
 function setUpHyperland() {
@@ -152,22 +149,22 @@ function setUpHyperland() {
 
 # Function to install Kitty
 function install_kitty() {
-    sudo pacman -S kitty
+    InstallPackage kitty
 }
 
 # Function to install Firefox
 function install_firefox() {
-    sudo pacman -S firefox
+    InstallPackage firefox
 }
 
 # Function to install Locate
 function install_locate() {
-    sudo pacman -S locate
+    InstallPackage mlocate
 }
 
-# Function to install zsh for all users and set it as default shell
+# Function to install zsh for all users and set it as the default shell
 function install_zsh() {
-    sudo pacman -S zsh
+    InstallPackage zsh
 
     # Change the shell for all users
     users=$(cut -d: -f1 /etc/passwd)
@@ -189,7 +186,7 @@ function install_zsh() {
 
 # Function to install zsh plugins
 function install_zsh_plugins() {
-    sudo pacman -S zsh-syntax-highlighting zsh-autosuggestions
+    InstallPackage zsh-syntax-highlighting zsh-autosuggestions
     sudo mkdir -p /usr/share/zsh-sudo
     cd /usr/share/zsh-sudo
     sudo curl -LO https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
@@ -202,7 +199,7 @@ function update_system_files() {
 
 # Function to install bat and lsd
 function install_bat_lsd() {
-    sudo pacman -S lsd bat
+    InstallPackage lsd bat
 }
 
 # Function to install Hack Nerd Fonts
@@ -216,7 +213,7 @@ function install_nerd_fonts() {
 
 # Function to configure and install kitty
 function config_install_kitty() {
-    sudo pacman -S kitty
+    InstallPackage kitty
     sudo mkdir -p /root/.config/kitty
     cd /root/.config/kitty
     sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
@@ -247,26 +244,29 @@ function install_powerlevel_10k() {
 
 # Function to install fzf
 function install_fzf() {
-    sudo pacman -S fzf
+    InstallPackage fzf
 }
 
 # Function to install neovim with NvChad
 function install_neovim_nvchad() {
-    sudo pacman -S neovim
+    InstallPackage neovim
     git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 }
 
 # Function to install mdcat
 function install_mdcat() {
-    sudo pacman -S mdcat
+    InstallPackage mdcat
 }
 
 function main2() {
    setUpNetwork
    read -p "Read main user name: " mainUser
-   su $mainUser -c "installAUR"
-   su $mainUser -c "installBlackArch"
-   su $mainUser -c "setUpHyperland"
+   su -l $mainUser -c "installAUR"
+   sleep 10
+   su -l $mainUser -c "installBlackArch"
+   sleep 10
+   su -l $mainUser -c "setUpHyperland"
+   sleep 10
    install_kitty
    install_firefox
    install_locate
@@ -282,5 +282,6 @@ function main2() {
    install_mdcat
 }
 
+sleep 20
 main2
 
