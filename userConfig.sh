@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function InstallPackage() {
-   pacman -S --noconfirm --needed "$1"
+   sudo pacman -S --noconfirm --needed "$1"
 }
 
 function installAUR() {
@@ -10,7 +10,7 @@ function installAUR() {
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
-   makepkg -si --noconfirm
+   sudo makepkg -si --noconfirm
 }
 
 function installBlackArch() {
@@ -20,7 +20,6 @@ function installBlackArch() {
    chmod +x strap.sh
    sudo -S ./strap.sh
    InstallPackage blackarch
-   sudo pacman -Syu --noconfirm
 }
 
 function setUpHyperland() {
