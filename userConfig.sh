@@ -5,21 +5,20 @@ function InstallPackage() {
 }
 
 function installAUR() {
-   password=$1
    InstallPackage git
-   echo "$password" | sudo -S mkdir -p ~/Desktop/repos
+   mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
-   echo "$password" | sudo -S makepkg -si --noconfirm
+   makepkg -si --noconfirm
 }
 
 function installBlackArch() {
    password=$1
    InstallPackage curl
-   echo "$password" | sudo -S mkdir -p ~/Desktop/repos/BlackArch
+   mkdir -p ~/Desktop/repos/BlackArch
    cd ~/Desktop/repos/BlackArch
-   curl -LO https://blackarch.org/strap.sh
+   curl -O https://blackarch.org/strap.sh
    chmod +x strap.sh
    echo "$password" | sudo -S ./strap.sh
 }
@@ -37,7 +36,7 @@ function setUpHyperland() {
 function main() {
     read -s -p "Enter sudo password: " password
     InstallPackage git  # Install git at the beginning
-    installAUR  
+    installAUR 
     sleep 50
     installBlackArch
     sleep 50
