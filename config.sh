@@ -152,7 +152,9 @@ function install_zsh() {
     curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/.zshrc
     dos2unix .zshrc
     sudo cp .zshrc /root/.zshrc
-    for user_home in /home/*; do
+
+    users=($(find /home/ -maxdepth 1 -type d))
+    for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
             sudo ln -s /root/.zshrc "$user_home/.zshrc"
         fi
@@ -198,7 +200,8 @@ function config_install_kitty() {
     dos2unix kitty.conf
     dos2unix color.ini
 
-    for user_home in /home/*; do
+    users=($(find /home/ -maxdepth 1 -type d))
+    for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
             sudo mkdir -p "$user_home/.config/kitty"
             sudo ln -s /root/.config/kitty/kitty.conf "$user_home/.config/kitty/kitty.conf"
@@ -213,7 +216,8 @@ function install_powerlevel_10k() {
     echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
     zsh
 
-    for user_home in /home/*; do
+    users=($(find /home/ -maxdepth 1 -type d))
+    for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
             sudo mkdir -p "$user_home/.config/powerlevel10k"
             sudo ln -s /root/.config/powerlevel10k/.p10k.zsh "$user_home/.config/powerlevel10k/.p10k.zsh"
@@ -244,7 +248,7 @@ function main2() {
    users=($(find /home/ -maxdepth 1 -type d))
    users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
    echo "This are the available users: "
-   for user in $users; do echo "[+] $user";  done
+   for user in "${users[@]}"; do echo "[+] $user";  done
    while true; do
       read -p "Write the main user name: " mainUser
       if [[ " ${users[@]} " =~ " ${mainUser} " ]]; then
