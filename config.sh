@@ -178,13 +178,12 @@ function install_bat_lsd() {
     InstallPackage lsd 
     InstallPackage bat
 }
-
 # Function to install Hack Nerd Fonts
 function install_nerd_fonts() {
     InstallPackage unzip
     sudo mkdir -p /usr/share/fonts
     cd /usr/share/fonts
-    sudo curl -LO https://github.com/Thelag55/ArchInstalling/blob/main/Hack.zip
+    sudo curl -O https://github.com/Thelag55/ArchInstalling/raw/main/Hack.zip
     sudo unzip Hack.zip
     sudo rm Hack.zip
 }
@@ -240,8 +239,9 @@ function install_mdcat() {
 
 function main2() {
    setUpNetwork
+   InstallPackage git
 
-   users=(/home/*)
+   users=(/home/* | sed 's/\/home\///g')
    while true; do
       read -p "Write the main user name: " mainUser
       if [[ " ${users[@]} " =~ " ${mainUser} " ]]; then
@@ -265,7 +265,9 @@ function main2() {
    install_bat_lsd
    install_nerd_fonts
    config_install_kitty
+   read -p "Befoer Powerlevel10k Installing" test
    install_powerlevel_10k
+   read -p "After Powerlevel10k Installing" test
    install_fzf
    install_neovim_nvchad
    install_mdcat
