@@ -29,6 +29,7 @@ function installBlackArch() {
 
 function setUpHyperland() {
    read -p "Before HyperLand Installing" test
+   InstallPackage tmux
    mkdir -p ~/Downloads
    cd ~/Downloads
    read -p "Press Enter to continue with Hyperland setup..."
