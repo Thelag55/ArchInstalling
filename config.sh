@@ -155,6 +155,9 @@ function install_zsh() {
 
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
+
+    users=($(find /home/ -maxdepth 1 -type d))
+    for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
             sudo ln -s /root/.zshrc "$user_home/.zshrc"
         fi
@@ -200,6 +203,8 @@ function config_install_kitty() {
     dos2unix kitty.conf
     dos2unix color.ini
 
+    users=($(find /home/ -maxdepth 1 -type d))
+    for user_home in "${users[@]}"; do
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
@@ -271,6 +276,7 @@ function main2() {
    users=($(find /home/ -maxdepth 1 -type d))
    users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
    echo "This are the available users: "
+   for user in "${users[@]}"; do echo "[+] $user";  done
    for user in "${users[@]}"; do echo "[+] $user";  done
    while true; do
       read -p "Write the main user name: " mainUser
