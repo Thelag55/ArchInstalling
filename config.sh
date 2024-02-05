@@ -241,7 +241,9 @@ function main2() {
    setUpNetwork
    InstallPackage git
 
-   users=(/home/* | sed 's/\/home\///g')
+   users=(/home/*)
+   users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
+   echo "This are the available users: $users"
    while true; do
       read -p "Write the main user name: " mainUser
       if [[ " ${users[@]} " =~ " ${mainUser} " ]]; then
