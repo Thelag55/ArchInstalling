@@ -183,7 +183,7 @@ function install_nerd_fonts() {
     InstallPackage unzip
     sudo mkdir -p /usr/share/fonts
     cd /usr/share/fonts
-    sudo curl -O https://github.com/Thelag55/ArchInstalling/raw/main/Hack.zip
+    sudo curl -O https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/Hack.zip
     sudo unzip Hack.zip
     sudo rm Hack.zip
 }
@@ -268,12 +268,12 @@ function main2() {
    install_bat_lsd
    install_nerd_fonts
    config_install_kitty
-   read -p "Befoer Powerlevel10k Installing" test
-   install_powerlevel_10k
-   read -p "After Powerlevel10k Installing" test
    install_fzf
    install_neovim_nvchad
    install_mdcat
+   read -p "Befoer Powerlevel10k Installing" test
+   install_powerlevel_10k
+   read -p "After Powerlevel10k Installing" test
 }
 
 main2
