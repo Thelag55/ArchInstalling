@@ -37,11 +37,8 @@ function main() {
     read -s -p "Enter sudo password: " password
     InstallPackage git  # Install git at the beginning
     installAUR 
-    sleep 50
     installBlackArch
-    sleep 50
     setUpHyperland
-    sleep 50
 }   
 
 main

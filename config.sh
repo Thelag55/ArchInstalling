@@ -161,7 +161,8 @@ function install_zsh() {
 
 # Function to install zsh plugins
 function install_zsh_plugins() {
-    InstallPackage zsh-syntax-highlighting zsh-autosuggestions
+    InstallPackage zsh-syntax-highlighting 
+    InstallPackage zsh-autosuggestions
     sudo mkdir -p /usr/share/zsh-sudo
     cd /usr/share/zsh-sudo
     sudo curl -LO https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
@@ -174,12 +175,13 @@ function update_system_files() {
 
 # Function to install bat and lsd
 function install_bat_lsd() {
-    InstallPackage lsd bat
+    InstallPackage lsd 
+    InstallPackage bat
 }
 
 # Function to install Hack Nerd Fonts
 function install_nerd_fonts() {
-    InstallPackage unzipus
+    InstallPackage unzip
     sudo mkdir -p /usr/share/fonts
     cd /usr/share/fonts
     sudo curl -LO https://github.com/Thelag55/ArchInstalling/blob/main/Hack.zip
@@ -238,40 +240,36 @@ function install_mdcat() {
 
 function main2() {
    setUpNetwork
-   read -p "Read main user name: " mainUser
+
+   users=(/home/*)
+   while true; do
+      read -p "Write the main user name: " mainUser
+      if [[ " ${users[@]} " =~ " ${mainUser} " ]]; then
+         break
+      else
+         echo "Invalid user. Please try again."
+      fi
+   done
+
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
    sudo chmod +x ./userConfig.sh
    mv userConfig.sh home/$mainUser
    su -l $mainUser -c "./userConfig.sh"
 
-sleep 10
    install_kitty
-sleep 10
    install_firefox
-sleep 10
    install_locate
-sleep 10
    install_zsh
-sleep 10
    install_zsh_plugins
-sleep 10
    update_system_files
-sleep 10
    install_bat_lsd
-sleep 10
    install_nerd_fonts
-sleep 10
    config_install_kitty
-sleep 10
    install_powerlevel_10k
-sleep 10
    install_fzf
-sleep 10
    install_neovim_nvchad
-sleep 10
    install_mdcat
 }
 
-sleep 20
 main2
 
