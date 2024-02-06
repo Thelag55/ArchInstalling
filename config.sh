@@ -145,6 +145,7 @@ function setUpNetwork() {
 
 # Function to install zsh for all users and set it as the default shell
 function setUpZshForAllUsers() {
+   
     # Change the shell for all users
    users=($(find /home/ -maxdepth 1 -type d))
    users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
