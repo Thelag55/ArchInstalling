@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function installAUR() {
-   read -r "Before install Aur" test
+   read -p "Before install Aur" test
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
-   read -r "Before pkg Aur" test
+   read -p "Before pkg Aur" test
    makepkg -si --noconfirm
-   read -r "After pkg Aur" test
+   read -p "After pkg Aur" test
 }
 
 function setUpHyperland() {
