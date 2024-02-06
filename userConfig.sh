@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function InstallPackage() {
-   pacman -S --noconfirm --needed "$1"
+   echo "$password" | sudo -S pacman -S --noconfirm --needed "$1"
 }
 
 function installAUR() {
@@ -19,7 +19,7 @@ function installBlackArch() {
    cd ~/Desktop/repos/BlackArch
    curl -O https://blackarch.org/strap.sh
    chmod +x strap.sh
-   sudo ./strap.sh
+   echo "$password" | sudo -S ./strap.sh
 }
 
 function setUpHyperland() {
@@ -55,6 +55,7 @@ function setUpHyperland() {
 }
 
 function main() {
+    read -s -p "Enter sudo password: " password
     InstallPackage git  # Install git at the beginning
     installAUR 
     installBlackArch
