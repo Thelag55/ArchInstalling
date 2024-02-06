@@ -214,7 +214,30 @@ function config_install_kitty() {
 function install_powerlevel_10k() {
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
     echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-    zsh
+
+   session="PowerLevel10k"
+
+   tmux new-session -d -s "$session"
+
+   window=0
+   tmux rename-window -t "$session:$window" 'HyperLand'
+   tmux send-keys -t "$session:$window" "zsh; echo 'The script is over'; exit" C-m
+
+   tmux attach-session -t $session
+   # Wait for the installation script to complete (you may adjust the sleep duration)
+   sleep 5
+
+   # Check if the installation script has completed successfully
+   if tmux wait-for -S "$session:complete"; then
+      echo "Installation completed successfully."
+   else
+      echo "Installation failed."
+   fi
+
+   # Kill the tmux session
+   tmux kill-session -t "$session"
+
+
 
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
@@ -275,9 +298,7 @@ function main2() {
    install_fzf
    install_neovim_nvchad
    install_mdcat
-   read -p "Befoer Powerlevel10k Installing" test
    install_powerlevel_10k
-   read -p "After Powerlevel10k Installing" test
 }
 
 main2
