@@ -145,7 +145,7 @@ function setUpNetwork() {
 
 # Function to install zsh for all users and set it as the default shell
 function setUpZshForAllUsers() {
-   
+
     # Change the shell for all users
    users=($(find /home/ -maxdepth 1 -type d))
    users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
@@ -158,12 +158,16 @@ function setUpZshForAllUsers() {
     cd /tmp
     curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/.zshrc
     dos2unix .zshrc
-    sudo cp .zshrc /root/.zshrc
+    mkdir -p /usr/share/share
+    sudo cp .zshrc /usr/share/share
 
+    #Link to root
+    ln -s /usr/share/share/.zshrc /root/.zshrc
+    #Link to users
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
-            sudo ln -s /root/.zshrc "$user_home/.zshrc"
+            ln -s /usr/share/share/.zshrc "$user_home/.zshrc"
         fi
     done
 }
