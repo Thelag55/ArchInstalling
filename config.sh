@@ -21,7 +21,7 @@ installDependencies() {
 
 function installAllDependences() {
    
-   installDependencies sudo visudo grub efibootmgr dosfstools os-prober mtools kitty firefox mlocate zsh dos2unix zsh-syntax-highlighting zsh-autosuggestions lsd bat unzip fzf neovim git tmux curl
+   installDependencies sudo visudo grub efibootmgr dosfstools os-prober mtools kitty firefox mlocate zsh dos2unix zsh-syntax-highlighting zsh-autosuggestions lsd bat unzip fzf neovim git tmux curl npm
 
 }
 
