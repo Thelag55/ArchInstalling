@@ -128,6 +128,8 @@ function main() {
 
    enterArchChroot "$configfile $device"
 
+   read -p "Before reboot" test
+
    umount -a # In order to do not corrupt any file      
 
    reboot
