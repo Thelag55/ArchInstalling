@@ -5,12 +5,7 @@ device="$1"
 # Define all functions here...
 
 function InstallAllDependences() {
-   sudo pacman -Sy --noconfirm --needed \
-    sudo visudo \
-    grub efibootmgr dosfstools os-prober mtools \
-    kitty firefox mlocate zsh dos2unix \
-    zsh-syntax-highlighting zsh-autosuggestions \
-    lsd bat unzip fzf neovim git tmux curl
+   sudo pacman -Sy --noconfirm --needed sudo visudo grub efibootmgr dosfstools os-prober mtools kitty firefox mlocate zsh dos2unix zsh-syntax-highlighting zsh-autosuggestions lsd bat unzip fzf neovim git tmux curl
    
    read -p "Debugg point after install all dependences"
 }

@@ -8,14 +8,6 @@ function installAUR() {
    makepkg -si --noconfirm
 }
 
-function installBlackArch() {
-   mkdir -p ~/Desktop/repos/BlackArch
-   cd ~/Desktop/repos/BlackArch
-   curl -O https://blackarch.org/strap.sh
-   chmod +x strap.sh
-   echo "$password" | sudo -S ./strap.sh
-}
-
 function setUpHyperland() {
    mkdir -p ~/Downloads
    cd ~/Downloads
