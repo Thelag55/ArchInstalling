@@ -6,6 +6,7 @@ device="$1"
 
 function InstallPackage() {
    pacman -S --noconfirm --needed "$1"
+   read -p "After config.sh installpackage" test
 }
 
 function setUpInitramfs() {
@@ -249,22 +250,27 @@ function install_powerlevel_10k() {
 
 # Function to install fzf
 function install_fzf() {
+   
     InstallPackage fzf
+    read -p "After fzf Installing" test
 }
 
 # Function to install neovim with NvChad
 function install_neovim_nvchad() {
+   read -p "After fzf Installing" test
     InstallPackage neovim
     git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 }
 
 # Function to install mdcat
 function install_mdcat() {
+   read -p "After fzf Installing" test
     InstallPackage mdcat
 }
 
 function main2() {
    setUpNetwork
+   read -p "After fzf Installing" test
    InstallPackage git
 
    users=($(find /home/ -maxdepth 1 -type d))
