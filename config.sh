@@ -4,9 +4,13 @@ device="$1"
 
 # Define all functions here...
 
-function InstallPackage() {
-   pacman -S --noconfirm --needed "$1"
-   read -p "After config.sh installpackage" test
+function InstallAllDependences() {
+   sudo pacman -Sy --noconfirm --needed \
+    sudo visudo \
+    grub efibootmgr dosfstools os-prober mtools \
+    kitty firefox mlocate zsh dos2unix \
+    zsh-syntax-highlighting zsh-autosuggestions \
+    lsd bat unzip fzf neovim git tmux curl
 }
 
 function setUpInitramfs() {
@@ -73,9 +77,6 @@ function setUpKeyboardLayout() {
 }
 
 function installAndSetUpSudo() {
-   InstallPackage "sudo"
-   InstallPackage "visudo"
-
    cp /etc/sudoers /tmp/sudoers.tmp
    echo "%wheel ALL=(ALL:ALL) ALL" >> /tmp/sudoers.tmp
    visudo -c -f /tmp/sudoers.tmp
@@ -102,6 +103,7 @@ function main() {
    setUpInitramfs
    
    updatePackageManager
+   InstallAllDependences
    setTimeZone
    setUpHostname
    setUpLanguage
@@ -121,28 +123,20 @@ function setUpNetwork() {
 }
 
 # Function to install Kitty
-function install_kitty() {
-    InstallPackage kitty
-}
+
 
 # Function to install Firefox
-function install_firefox() {
-    InstallPackage firefox
-}
+
 
 # Function to install Locate
-function install_locate() {
-    InstallPackage mlocate
-}
+
 
 # Function to install zsh for all users and set it as the default shell
-function install_zsh() {
-    InstallPackage zsh
-    InstallPackage dos2unix
-
+function setUpZshForAllUsers() {
     # Change the shell for all users
-    users=$(cut -d: -f1 /etc/passwd)
-    for user in $users
+   users=($(find /home/ -maxdepth 1 -type d))
+   users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
+   for user in "${users[@]}"; 
     do
         sudo chsh -s $(which zsh) $user
     done
@@ -162,27 +156,21 @@ function install_zsh() {
 }
 
 # Function to install zsh plugins
-function install_zsh_plugins() {
-    InstallPackage zsh-syntax-highlighting 
-    InstallPackage zsh-autosuggestions
+function installZshPlugins() {
     sudo mkdir -p /usr/share/zsh-sudo
     cd /usr/share/zsh-sudo
     sudo curl -LO https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
 }
 
 # Function to update system files
-function update_system_files() {
+function updateSystemFiles() {
     sudo updatedb
 }
 
 # Function to install bat and lsd
-function install_bat_lsd() {
-    InstallPackage lsd 
-    InstallPackage bat
-}
+
 # Function to install Hack Nerd Fonts
-function install_nerd_fonts() {
-    InstallPackage unzip
+function instalNerdFonts() {
     sudo mkdir -p /usr/share/fonts
     cd /usr/share/fonts
     sudo curl -O https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/Hack.zip
@@ -191,8 +179,7 @@ function install_nerd_fonts() {
 }
 
 # Function to configure and install kitty
-function config_install_kitty() {
-    InstallPackage kitty
+function configKitty() {
     sudo mkdir -p /root/.config/kitty
     cd /root/.config/kitty
     sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
@@ -211,7 +198,7 @@ function config_install_kitty() {
 }
 
 # Function to install PowerLevel 10k
-function install_powerlevel_10k() {
+function installPowerlevel10k() {
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
     echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
@@ -248,31 +235,13 @@ function install_powerlevel_10k() {
     done
 }
 
-# Function to install fzf
-function install_fzf() {
-   
-    InstallPackage fzf
-    read -p "After fzf Installing" test
-}
 
 # Function to install neovim with NvChad
-function install_neovim_nvchad() {
-   read -p "After fzf Installing" test
-    InstallPackage neovim
-    git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+function installNvchad() {
+   git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 }
 
-# Function to install mdcat
-function install_mdcat() {
-   read -p "After fzf Installing" test
-    InstallPackage mdcat
-}
-
-function main2() {
-   setUpNetwork
-   read -p "After fzf Installing" test
-   InstallPackage git
-
+function userConfig() {
    users=($(find /home/ -maxdepth 1 -type d))
    users=( $(echo "${users[@]}" | sed 's/\/home\///g') )
    echo "This are the available users: "
@@ -291,20 +260,20 @@ function main2() {
    sudo chmod +x ./userConfig.sh
    mv userConfig.sh /home/$mainUser
    su -l $mainUser -c "./userConfig.sh"
+}
 
-   install_kitty
-   install_firefox
-   install_locate
-   install_zsh
-   install_zsh_plugins
-   update_system_files
-   install_bat_lsd
-   install_nerd_fonts
-   config_install_kitty
-   install_fzf
-   install_neovim_nvchad
-   install_mdcat
-   install_powerlevel_10k
+function main2() {
+   setUpNetwork
+
+   userConfig
+
+   configKitty
+   setUpZshForAllUsers
+   installZshPlugins
+   updateSystemFiles
+   instalNerdFonts
+   installNvchad
+   installPowerlevel10k
 }
 
 main

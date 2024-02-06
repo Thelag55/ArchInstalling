@@ -1,12 +1,6 @@
 #!/bin/bash
 
-function InstallPackage() {
-   echo "$password" | sudo -S pacman -S --noconfirm --needed "$1"
-   read -p "After userConfig.sh installpackage" test
-}
-
 function installAUR() {
-   InstallPackage git
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
@@ -15,7 +9,6 @@ function installAUR() {
 }
 
 function installBlackArch() {
-   InstallPackage curl
    mkdir -p ~/Desktop/repos/BlackArch
    cd ~/Desktop/repos/BlackArch
    curl -O https://blackarch.org/strap.sh
@@ -24,9 +17,6 @@ function installBlackArch() {
 }
 
 function setUpHyperland() {
-   read -p "Before HyperLand Installing" test
-   InstallPackage tmux
-   read -p "Before Tmux Installing" test
    mkdir -p ~/Downloads
    cd ~/Downloads
    git clone https://gitlab.com/stephan-raabe/dotfiles.git
@@ -59,7 +49,6 @@ function setUpHyperland() {
 
 function main() {
     read -s -p "Enter sudo password: " password
-    InstallPackage git  # Install git at the beginning
     installAUR 
     installBlackArch
     setUpHyperland
