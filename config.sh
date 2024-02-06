@@ -2,6 +2,8 @@
 
 device="$1"
 
+# Define all functions here...
+
 function InstallPackage() {
    pacman -S --noconfirm --needed "$1"
 }
@@ -44,7 +46,7 @@ function setUpUsers() {
 }
 
 function setUpGRUB() {
-   # Installing GRUB dependences
+   # Installing GRUB dependencies
    pacman -S --noconfirm --needed grub efibootmgr dosfstools os-prober mtools
    
    grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
@@ -110,8 +112,6 @@ function main() {
 
    setUpGRUB
 }
-
-main
 
 function setUpNetwork() {
    sudo systemctl start NetworkManager.service
@@ -307,4 +307,5 @@ function main2() {
    install_powerlevel_10k
 }
 
+main
 main2
