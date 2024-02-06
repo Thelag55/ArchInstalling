@@ -8,7 +8,7 @@ function installAUR() {
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
    read -p "Before pkg Aur" test
-   echo "$password" | makepkg -si --noconfirm
+   makepkg -si 
    read -p "After pkg Aur" test
 }
 
