@@ -2,22 +2,19 @@
 
 function installAUR() {
    password=$1
-   read -p "Before install Aur" test
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
-   read -p "Before pkg Aur" test
-   read -p "Before install dependencies Aur" test
    makepkg -s  # This will install dependencies
-   read -p "Before build dependencies Aur" test
    makepkg      # This will build the package
    read -p "Before install package Aur" test
    package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
-   echo "$password" | sudo -S pacman -U $package
-   sudo -S pacman -U $package
+   echo "$password" | sudo -Sy pacman -U $package
+   echo "$password" | sudo -Sy pacman -U $package
    paru  # Replace package_name with the actual package name generated
-
+   cd ..
+   rm -rf paru
    read -p "After pkg Aur" test
 }
 
