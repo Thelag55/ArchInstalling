@@ -11,6 +11,8 @@ function InstallAllDependences() {
     kitty firefox mlocate zsh dos2unix \
     zsh-syntax-highlighting zsh-autosuggestions \
     lsd bat unzip fzf neovim git tmux curl
+   
+   read -p "Debugg point after install all dependences"
 }
 
 function setUpInitramfs() {
