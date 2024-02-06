@@ -14,7 +14,9 @@ function installAUR() {
    makepkg      # This will build the package
    read -p "Before install package Aur" test
    package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
-   echo "$password" | sudo -S pacman -U $package  # Replace package_name with the actual package name generated
+   echo "$password" | sudo -S pacman -U $package
+   sudo -S pacman -U $package
+   paru  # Replace package_name with the actual package name generated
 
    read -p "After pkg Aur" test
 }
