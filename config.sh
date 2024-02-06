@@ -4,10 +4,25 @@ device="$1"
 
 # Define all functions here...
 
-function InstallAllDependences() {
-   sudo pacman -Sy --noconfirm --needed sudo visudo grub efibootmgr dosfstools os-prober mtools kitty firefox mlocate zsh dos2unix zsh-syntax-highlighting zsh-autosuggestions lsd bat unzip fzf neovim git tmux curl
+#!/bin/bash
+
+installDependencies() {
+    for pkg in "$@"; do
+        echo "Installing $pkg..."
+        sudo pacman -Sy --noconfirm --needed "$pkg"
+        if [ $? -eq 0 ]; then
+            echo "Successfully installed $pkg."
+        else
+            echo "Failed to install $pkg."
+        fi
+    done
+}
+
+
+function installAllDependences() {
    
-   read -p "Debugg point after install all dependences"
+   installDependencies sudo visudo grub efibootmgr dosfstools os-prober mtools kitty firefox mlocate zsh dos2unix zsh-syntax-highlighting zsh-autosuggestions lsd bat unzip fzf neovim git tmux curl
+
 }
 
 function setUpInitramfs() {
@@ -100,7 +115,7 @@ function main() {
    setUpInitramfs
    
    updatePackageManager
-   InstallAllDependences
+   installAllDependences
    setTimeZone
    setUpHostname
    setUpLanguage
