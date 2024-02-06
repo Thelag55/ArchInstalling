@@ -197,19 +197,24 @@ function instalNerdFonts() {
 
 # Function to configure and install kitty
 function configKitty() {
+    mkdir -p /usr/share/share
+    cd /usr/share/share
     sudo mkdir -p /root/.config/kitty
-    cd /root/.config/kitty
-    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
-    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/color.ini
+    curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
+    curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/color.ini
     dos2unix kitty.conf
     dos2unix color.ini
 
+   #Link to root
+   ln -s /usr/share/share/kitty.conf "/root/.config/kitty/kitty.conf"
+   ln -s /usr/share/share/color.ini  "/root/.config/kitty/color.ini"
+   #Link to all users
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
             sudo mkdir -p "$user_home/.config/kitty"
-            sudo ln -s /root/.config/kitty/kitty.conf "$user_home/.config/kitty/kitty.conf"
-            sudo ln -s /root/.config/kitty/color.ini  "$user_home/.config/kitty/color.ini"
+            ln -s /root/.config/kitty/kitty.conf "$user_home/.config/kitty/kitty.conf"
+            ln -s /root/.config/kitty/color.ini  "$user_home/.config/kitty/color.ini"
         fi
     done
 }
