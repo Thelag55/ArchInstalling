@@ -8,7 +8,14 @@ function installAUR() {
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
    read -p "Before pkg Aur" test
-   makepkg -si 
+   read -p "Before install dependencies Aur" test
+   makepkg -s  # This will install dependencies
+   read -p "Before build dependencies Aur" test
+   makepkg      # This will build the package
+   read -p "Before install package Aur" test
+   package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
+   echo "$password" | sudo -S pacman -U $package  # Replace package_name with the actual package name generated
+
    read -p "After pkg Aur" test
 }
 
