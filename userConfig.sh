@@ -43,7 +43,7 @@ function main() {
     read -s -p "Enter sudo password: " password
     installAUR 
     installBlackArch
-    setUpHyperland
+    #setUpHyperland
 }   
 
 main
