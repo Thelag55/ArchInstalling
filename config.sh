@@ -289,7 +289,7 @@ function main2() {
 
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
    sudo chmod +x ./userConfig.sh
-   mv userConfig.sh home/$mainUser
+   mv userConfig.sh /home/$mainUser
    su -l $mainUser -c "./userConfig.sh"
 
    install_kitty
