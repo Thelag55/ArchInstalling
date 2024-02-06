@@ -223,8 +223,8 @@ function configKitty() {
 
 # Function to install PowerLevel 10k
 function installPowerlevel10k() {
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+    
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/share/powerlevel10k
 
    session="PowerLevel10k"
 
