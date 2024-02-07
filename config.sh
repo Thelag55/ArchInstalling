@@ -30,7 +30,7 @@ function setUpInitramfs() {
 }
 
 function setTimeZone() {
-   sudo ln -sf "/usr/share/zoneinfo/Europe/Madrid" "/etc/localtime"
+   sudo ln -sf "/usr/share/zoneinfo/Europe/Madrid" "/etc/localtime" 
 }
 
 function setUpRoot() {
