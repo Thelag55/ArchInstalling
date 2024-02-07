@@ -11,7 +11,7 @@ function installAUR() {
    read -p "Before install package Aur" test
    package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
    echo "$password" | sudo -S pacman -U $package
-   sudo -Sy pacman -U $package
+   sudo -S pacman -U $package
    paru  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru
