@@ -207,16 +207,6 @@ function installPowerlevel10k() {
     
    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/share/powerlevel10k
 
-
-
-
-    users=($(find /home/ -maxdepth 1 -type d))
-    for user_home in "${users[@]}"; do
-        if [ -d "$user_home" ]; then
-            sudo mkdir -p "$user_home/.config/powerlevel10k"
-            sudo ln -s /root/.config/powerlevel10k/.p10k.zsh "$user_home/.config/powerlevel10k/.p10k.zsh"
-        fi
-    done
 }
 
 
