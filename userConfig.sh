@@ -15,13 +15,12 @@ function installAUR() {
 }
 
 function setUpHyperland() {
-   mkdir -p ~/Downloads
-   cd ~/Downloads
-   git clone https://gitlab.com/stephan-raabe/dotfiles.git
-   cd dotfiles
+   mkdir -p ~/Downloads/Hyprland-Raabe
+   cd ~/Downloads/Hyprland-Raabe
+   curl -O https://gitlab.com/stephan-raabe/installer/-/raw/main/installer.sh
 
    session="HyperLand"
-   install_script="install.sh"
+   install_script="installer.sh"
 
    tmux new-session -d -s "$session"
 
@@ -50,9 +49,7 @@ function main() {
     echo "Please enter your sudo sudo -Sv password:"
     sudo -Sv
    installAUR
-
-   
-    #setUpHyperland 
+   setUpHyperland 
 }   
 
 main
