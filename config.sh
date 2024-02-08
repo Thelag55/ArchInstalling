@@ -116,13 +116,12 @@ function setUpNetwork() {
    sudo systemctl enable wpa_supplicant.service
 }
 
-# Function to install Kitty
-
-
-# Function to install Firefox
-
-
-# Function to install Locate
+function installFzf() {
+   git clone --depth 1 https://github.com/junegunn/fzf.git /usr/share/share/.fzf
+   cd /usr/share/share
+   ./.fzf/install
+   mv /root/.fzf.zsh /usr/share/share/.fzf.zsh
+}
 
 
 # Function to install zsh for all users and set it as the default shell
@@ -273,6 +272,7 @@ function main() {
    configKitty
    setUpZshForAllUsers
    installZshPlugins
+   installFzf
    updateSystemFiles
    instalNerdFonts
    installNvchad
