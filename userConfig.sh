@@ -26,14 +26,18 @@ function setUpHyperland() {
 
    session="HyperLand"
    install_script="installer.sh"
-
-   tmux new-session -d -s "HyperLand" || { echo "error on new session"; sleep 50; }
-
    window=0
-   tmux rename-window -t "HyperLand:0" "HyperLand" || { echo "error on rename session"; sleep 50; }
-   tmux send-keys -t "HyperLand:0" "./installer.sh; echo 'The script is over'; exit" C-m || { echo "error on sendkeys to session"; sleep 50; }
 
-   tmux attach-session -t "HyperLand" || { echo "error on attach session"; sleep 50; }
+   tmux new-session -d -s "HyperLand" || { echo "error on new session"; }
+   sleep 10
+
+   tmux rename-window -t "HyperLand:0" "HyperLand" || { echo "error on rename session"; }
+   sleep 10
+
+   tmux send-keys -t "HyperLand:0" "./installer.sh" C-m || { echo "error on sendkeys to session"; }
+   sleep 10
+
+   tmux attach-session -t "HyperLand" || { echo "error on attach session"; }
    
    # Wait for the installation script to complete (you may adjust the sleep duration)
    sleep 5
