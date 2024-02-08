@@ -49,9 +49,11 @@ function setUpHyperland() {
 
 function main() {
 
-    echo "Please enter your sudo password:"
+    echo "Please enter your sudo sudo -Sv password:"
     sudo -Sv
-    installBlackArch 
+   installAUR
+
+    #installBlackArch 
     #setUpHyperland 
 }   
 
