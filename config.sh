@@ -233,7 +233,7 @@ function userConfig() {
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
    sudo chmod +x ./userConfig.sh
    mv userConfig.sh /home/$mainUser
-   su -l $mainUser -c "./userConfig.sh"
+   su -l $mainUser -c "sudo ./userConfig.sh"
 }
 
 function main() {

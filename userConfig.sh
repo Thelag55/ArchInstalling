@@ -15,9 +15,12 @@ function installAUR() {
 }
 
 function setUpHyperland() {
+   read -p "Before HyperlandInstalling" test
    mkdir -p ~/Downloads/Hyprland-Raabe
    cd ~/Downloads/Hyprland-Raabe
    curl -O https://gitlab.com/stephan-raabe/installer/-/raw/main/installer.sh
+   read -p "After HyperlandInstalling" test
+   read -p "Before HyperlandSetUp" test
 
    session="HyperLand"
    install_script="installer.sh"
@@ -41,13 +44,14 @@ function setUpHyperland() {
 
    # Kill the tmux session
    tmux kill-session -t "$session"
+   read -p "After HyperlandSetUp" test
 
 }
 
 function main() {
 
-    echo "Please enter your sudo sudo -Sv password:"
-    sudo -Sv
+   echo "Please enter your sudo sudo -Sv password:"
+   sudo -Sv
    installAUR
    setUpHyperland 
 }   
