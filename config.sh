@@ -287,6 +287,9 @@ function userConfig() {
 }
 
 function main2() {
+   echo "Please enter your sudo password:"
+   sudo -v
+
    setUpNetwork
 
    userConfig

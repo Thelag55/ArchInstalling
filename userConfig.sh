@@ -1,7 +1,6 @@
 #!/bin/bash
 
 function installAUR() {
-   password=$1
    mkdir -p ~/Desktop/repos
    cd ~/Desktop/repos
    git clone https://aur.archlinux.org/paru-bin.git
@@ -10,8 +9,7 @@ function installAUR() {
    makepkg      # This will build the package
    read -p "Before install package Aur" test
    package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
-   echo "$password" | sudo -S pacman -U $package
-   sudo -S pacman -U $package
+   sudo pacman -U $package
    paru  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru
@@ -50,8 +48,9 @@ function setUpHyperland() {
 }
 
 function main() {
-    read -s -p "Enter sudo password: " password
-    installAUR "$password"
+
+    echo "Please enter your sudo password:"
+    sudo -v
     installBlackArch 
     #setUpHyperland 
 }   
