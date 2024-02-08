@@ -16,20 +16,24 @@ function installAUR() {
 
 function setUpHyperland() {
    mkdir -p ~/Downloads/Hyprland-Raabe
-   cd ~/Downloads/Hyprland-Raabe
+   cd ~/Downloads/Hyprland-Raabe 
    curl -O https://gitlab.com/stephan-raabe/installer/-/raw/main/installer.sh
+
+   echo "$(pwd)"
+
    read -p "Before HyperlandSetUp" test
+
 
    session="HyperLand"
    install_script="installer.sh"
 
-   tmux new-session -d -s "HyperLand"
+   tmux new-session -d -s "HyperLand" || echo "error on new session"; sleep 50
 
    window=0
-   tmux rename-window -t "HyperLand:0" "HyperLand"
-   tmux send-keys -t "HyperLand:0" "./installer.sh; echo 'The script is over'; exit" C-m
+   tmux rename-window -t "HyperLand:0" "HyperLand" || echo "error on rename session"; sleep 50
+   tmux send-keys -t "HyperLand:0" "./installer.sh; echo 'The script is over'; exit" C-m || echo "error on sendkeys to session"; sleep 50
 
-   tmux attach-session -t "HyperLand"
+   tmux attach-session -t "HyperLand" || echo "error on attach session"; sleep 50
    # Wait for the installation script to complete (you may adjust the sleep duration)
    sleep 5
 
