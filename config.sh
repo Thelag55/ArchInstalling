@@ -182,7 +182,7 @@ function instalNerdFonts() {
 function configKitty() {
     mkdir -p /usr/share/share
     cd /usr/share/share
-    sudo mkdir -p /root/.config/kitty
+    mkdir -p /root/.config/kitty
     curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/kitty.conf
     curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/color.ini
     dos2unix kitty.conf
@@ -195,7 +195,7 @@ function configKitty() {
     users=($(find /home/ -maxdepth 1 -type d))
     for user_home in "${users[@]}"; do
         if [ -d "$user_home" ]; then
-            sudo mkdir -p "$user_home/.config/kitty"
+            mkdir -p "$user_home/.config/kitty"
             ln -s /root/.config/kitty/kitty.conf "$user_home/.config/kitty/kitty.conf"
             ln -s /root/.config/kitty/color.ini  "$user_home/.config/kitty/color.ini"
         fi
@@ -230,10 +230,15 @@ function userConfig() {
       fi
    done
 
+   read -p "After 1" test
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
+   read -p "After 2" test
    sudo chmod +x ./userConfig.sh
+   read -p "After 3" test
    mv userConfig.sh /home/$mainUser
-   su -l $mainUser -c "sudo ./userConfig.sh"
+   read -p "After 4" test
+   su -l $mainUser -c "./userConfig.sh"
+   read -p "After 5" test
 }
 
 function main() {

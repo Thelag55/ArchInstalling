@@ -53,6 +53,7 @@ function main() {
    echo "Please enter your sudo sudo -Sv password:"
    sudo -Sv
    installAUR
+   
    setUpHyperland 
 }   
 
