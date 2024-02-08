@@ -171,7 +171,7 @@ function updateSystemFiles() {
 
 # Function to install Hack Nerd Fonts
 function instalNerdFonts() {
-    sudo mkdir -p /usr/share/fonts
+    sudo mkdir -p /usr/share/fonts 
     cd /usr/share/fonts
     sudo curl -O https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/Hack.zip
     sudo unzip Hack.zip
