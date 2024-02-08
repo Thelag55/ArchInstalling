@@ -110,6 +110,8 @@ function endMountingPartitions() {
 }
 
 function main() {
+   echo "Please enter your sudo password:"
+   sudo -Sv
    endMountingPartitions
 
    setUpInitramfs
@@ -287,9 +289,6 @@ function userConfig() {
 }
 
 function main2() {
-   echo "Please enter your sudo password:"
-   sudo -v
-
    setUpNetwork
 
    userConfig
