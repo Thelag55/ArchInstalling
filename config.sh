@@ -206,29 +206,8 @@ function configKitty() {
 # Function to install PowerLevel 10k
 function installPowerlevel10k() {
     
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/share/powerlevel10k
+   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/share/powerlevel10k
 
-   session="PowerLevel10k"
-
-   tmux new-session -d -s "$session"
-
-   window=0
-   tmux rename-window -t "$session:$window" 'HyperLand'
-   tmux send-keys -t "$session:$window" "zsh; echo 'The script is over'; exit" C-m
-
-   tmux attach-session -t $session
-   # Wait for the installation script to complete (you may adjust the sleep duration)
-   sleep 5
-
-   # Check if the installation script has completed successfully
-   if tmux wait-for -S "$session:complete"; then
-      echo "Installation completed successfully."
-   else
-      echo "Installation failed."
-   fi
-
-   # Kill the tmux session
-   tmux kill-session -t "$session"
 
 
 

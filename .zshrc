@@ -46,7 +46,13 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 source /usr/share/share/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# Generate .p10k.zsh in /usr/share/share if it doesn't exist
+if [ ! -f /usr/share/share/.p10k.zsh ]; then
+    p10k configure -p /usr/share/share/.p10k.zsh
+fi
+
+# Source .p10k.zsh
+source /usr/share/share/.p10k.zsh
 
 # Manual configuration
 

@@ -7,13 +7,11 @@ function installAUR() {
    cd paru-bin
    makepkg -s  # This will install dependencies
    makepkg -f    # This will build the package
-   read -p "Before install package Aur" test
    package="$(ls | grep paru-bin | grep -v debug | head -n 1)" 
    sudo pacman -U "$package"
    paru  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru
-   read -p "After pkg Aur" test
 }
 
 function setUpHyperland() {
@@ -53,7 +51,7 @@ function main() {
     sudo -Sv
    installAUR
 
-    #installBlackArch 
+   
     #setUpHyperland 
 }   
 
