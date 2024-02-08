@@ -230,15 +230,11 @@ function userConfig() {
       fi
    done
 
-   read -p "After 1" test
+
    sudo curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/userConfig.sh
-   read -p "After 2" test
    sudo chmod +x ./userConfig.sh
-   read -p "After 3" test
    mv userConfig.sh /home/$mainUser
-   read -p "After 4" test
    su -l $mainUser -c "./userConfig.sh"
-   read -p "After 5" test
 }
 
 function main() {

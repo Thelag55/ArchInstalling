@@ -15,11 +15,9 @@ function installAUR() {
 }
 
 function setUpHyperland() {
-   read -p "Before HyperlandInstalling" test
    mkdir -p ~/Downloads/Hyprland-Raabe
    cd ~/Downloads/Hyprland-Raabe
    curl -O https://gitlab.com/stephan-raabe/installer/-/raw/main/installer.sh
-   read -p "After HyperlandInstalling" test
    read -p "Before HyperlandSetUp" test
 
    session="HyperLand"
@@ -28,7 +26,7 @@ function setUpHyperland() {
    tmux new-session -d -s "$session"
 
    window=0
-   tmux rename-window -t "$session:$window" 'HyperLand'
+   tmux rename-window -t "$session:$window" "$session"
    tmux send-keys -t "$session:$window" "./$install_script; echo 'The script is over'; exit" C-m
 
    tmux attach-session -t $session
@@ -53,7 +51,7 @@ function main() {
    echo "Please enter your sudo sudo -Sv password:"
    sudo -Sv
    installAUR
-   
+
    setUpHyperland 
 }   
 
