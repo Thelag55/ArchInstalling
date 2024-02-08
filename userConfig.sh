@@ -6,10 +6,10 @@ function installAUR() {
    git clone https://aur.archlinux.org/paru-bin.git
    cd paru-bin
    makepkg -s  # This will install dependencies
-   makepkg      # This will build the package
+   makepkg -f    # This will build the package
    read -p "Before install package Aur" test
    package="$(ls | grep paru-bin*.pkg.tar.zst | head -n 1)"
-   sudo pacman -U $package
+   sudo pacman -U "$package"
    paru  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru

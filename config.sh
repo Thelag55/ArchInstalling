@@ -109,26 +109,6 @@ function endMountingPartitions() {
    mount "${device}1" "/boot/EFI"       # Mount ESP to /mnt/boot
 }
 
-function main() {
-   echo "Please enter your sudo password:"
-   sudo -Sv
-   endMountingPartitions
-
-   setUpInitramfs
-   
-   updatePackageManager
-   installAllDependences
-   setTimeZone
-   setUpHostname
-   setUpLanguage
-   setUpKeyboardLayout
-   installAndSetUpSudo
-   setUpRoot
-   setUpUsers
-
-   setUpGRUB
-}
-
 function setUpNetwork() {
    sudo systemctl start NetworkManager.service
    sudo systemctl enable NetworkManager
@@ -288,7 +268,25 @@ function userConfig() {
    su -l $mainUser -c "./userConfig.sh"
 }
 
-function main2() {
+function main() {
+   echo "Please enter your sudo password:"
+   sudo -Sv
+   endMountingPartitions
+
+   setUpInitramfs
+   
+   updatePackageManager
+   installAllDependences
+   setTimeZone
+   setUpHostname
+   setUpLanguage
+   setUpKeyboardLayout
+   installAndSetUpSudo
+   setUpRoot
+   setUpUsers
+
+   setUpGRUB
+
    setUpNetwork
 
    userConfig
@@ -303,4 +301,4 @@ function main2() {
 }
 
 main
-main2
+
