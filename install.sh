@@ -105,6 +105,9 @@ function updateDependences() {
 }
 
 function setUpArchChrootEnv() {
+   curl -LO https://raw.githubusercontent.com/Thelag55/ArchInstalling/main/config.sh
+   chmod +x "$1"
+   sleep 5
    cp "$1" /mnt
 }
 
