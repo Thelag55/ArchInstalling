@@ -32,7 +32,7 @@ function setUpHyperland() {
 
    tmux rename-window -t "HyperLand:0" "HyperLand" || { echo "error on rename session"; }
 
-   tmux send-keys -t "HyperLand:0" "./installer.sh; exit;" C-m || { echo "error on sendkeys to session"; }
+   tmux send-keys -t "HyperLand:0" "./installer.sh; exit;"|| { echo "error on sendkeys to session"; }
 
    tmux attach-session -t "HyperLand" || { echo "error on attach session"; }
    
