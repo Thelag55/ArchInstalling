@@ -23,21 +23,16 @@ function setUpHyperland() {
 
    echo "$(pwd)"
 
-   read -p "Before HyperlandSetUp" test
-
 
    session="HyperLand"
    install_script="installer.sh"
    window=0
 
    tmux new-session -d -s "HyperLand" || { echo "error on new session"; }
-   sleep 10
 
    tmux rename-window -t "HyperLand:0" "HyperLand" || { echo "error on rename session"; }
-   sleep 10
 
    tmux send-keys -t "HyperLand:0" "./installer.sh" C-m || { echo "error on sendkeys to session"; }
-   sleep 10
 
    tmux attach-session -t "HyperLand" || { echo "error on attach session"; }
    
@@ -53,7 +48,6 @@ function setUpHyperland() {
 
    # Kill the tmux session
    tmux kill-session -t "HyperLand"
-   read -p "After HyperlandSetUp" test
 
 }
 
