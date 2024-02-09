@@ -19,6 +19,8 @@ function setUpHyperland() {
    cd ~/Downloads/Hyprland-Raabe 
    curl -O https://gitlab.com/stephan-raabe/installer/-/raw/main/installer.sh
 
+   sudo chmod +x installer.sh
+
    echo "$(pwd)"
 
    read -p "Before HyperlandSetUp" test
