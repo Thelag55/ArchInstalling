@@ -8,7 +8,7 @@ function installAUR() {
    makepkg -s  # This will install dependencies
    makepkg -f    # This will build the package
    package="$(ls | grep paru-bin | grep -v debug | head -n 1)" 
-   sudo pacman -U "$package"
+   sudo pacman -U --noconfirm "$package"
    paru -Syu --noconfirm  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru
