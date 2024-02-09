@@ -9,7 +9,7 @@ function installAUR() {
    makepkg -f    # This will build the package
    package="$(ls | grep paru-bin | grep -v debug | head -n 1)" 
    sudo pacman -U "$package"
-   paru  # Replace package_name with the actual package name generated
+   paru -Syu --noconfirm  # Replace package_name with the actual package name generated
    cd ..
    rm -rf paru
 }
@@ -53,7 +53,7 @@ function setUpHyperland() {
 
 function main() {
 
-   echo "Please enter your sudo sudo -Sv password:"
+   echo "Please enter your sudo password:"
    sudo -Sv
    installAUR
 
